@@ -11,6 +11,15 @@
     <model name="floor_base">
       <static>true</static>
       <link name="floor_link">
+        <collision name="floor_collision">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>20 20</size>
+            </plane>
+          </geometry>
+        </collision>
         <visual name="floor_visual">
           <pose>0 0 0 0 0 0</pose>
           <geometry>
