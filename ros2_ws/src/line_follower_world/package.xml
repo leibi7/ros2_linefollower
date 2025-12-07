@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>line_follower_world</name>
+  <version>0.0.1</version>
+  <description>Gazebo world with red curved line and goal zone for line follower demo.</description>
+  <maintainer email="dev@linefollower.local">ROS Line Follower</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <depend>gazebo_ros</depend>
+  <depend>launch</depend>
+  <depend>launch_ros</depend>
+  <depend>ament_index_python</depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

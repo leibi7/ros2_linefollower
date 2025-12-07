@@ -1,0 +1,63 @@
+services:
+  sim:
+    build:
+      context: .
+      dockerfile: docker/ros_base.Dockerfile
+    platform: linux/amd64
+    container_name: sim
+    environment:
+      - ROS_DOMAIN_ID=23
+      - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+      - GAZEBO_MASTER_URI=http://sim:11345
+      - LOG_DIR=/logs/run_${RUN_ID:-latest}
+    command: >
+      bash -lc "source /opt/ros/humble/setup.bash &&
+                source /opt/ros2_ws/install/setup.bash &&
+                ros2 launch line_follower_bringup line_follower_demo.launch.py start_control:=false use_sim_time:=true"
+    networks:
+      - line_net
+    volumes:
+      - ./logs:/logs
+    tty: true
+
+  control:
+    build:
+      context: .
+      dockerfile: docker/ros_base.Dockerfile
+    platform: linux/amd64
+    container_name: control
+    environment:
+      - ROS_DOMAIN_ID=23
+      - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+      - LOG_DIR=/logs/run_${RUN_ID:-latest}
+    depends_on:
+      - sim
+    command: >
+      bash -lc "source /opt/ros/humble/setup.bash &&
+                source /opt/ros2_ws/install/setup.bash &&
+                ros2 launch line_follower_control control.launch.py use_sim_time:=true"
+    networks:
+      - line_net
+    volumes:
+      - ./logs:/logs
+    tty: true
+
+  novnc:
+    build:
+      context: .
+      dockerfile: docker/novnc.Dockerfile
+    platform: linux/amd64
+    container_name: novnc
+    environment:
+      - GAZEBO_MASTER_URI=http://sim:11345
+      - ROS_DOMAIN_ID=23
+    depends_on:
+      - sim
+    networks:
+      - line_net
+    ports:
+      - "8080:8080"
+    tty: true
+
+networks:
+  line_net: {}

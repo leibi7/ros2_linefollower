@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>line_follower_control</name>
+  <version>0.0.1</version>
+  <description>OpenCV based red line follower controller.</description>
+  <maintainer email="dev@linefollower.local">ROS Line Follower</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <depend>rclpy</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>image_transport</depend>
+  <depend>std_msgs</depend>
+  <depend>ament_index_python</depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
