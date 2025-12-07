@@ -41,6 +41,7 @@ class GoalMonitorNode(Node):
             self.goal_pub.publish(Bool(data=True))
             stamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
             self.log_file.write(f"{stamp:.3f},goal_reached\n")
+            self.log_file.flush()
             self.get_logger().info("GOAL reached!")
 
     def destroy_node(self):

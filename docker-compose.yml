@@ -8,10 +8,23 @@ services:
     environment:
       - ROS_DOMAIN_ID=23
       - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
-      - GAZEBO_MASTER_URI=http://sim:11345
+      - GAZEBO_MASTER_URI=http://127.0.0.1:11345
+      - DISPLAY=:99
+      - QT_X11_NO_MITSHM=1
+      - LIBGL_ALWAYS_SOFTWARE=1
+      - MESA_GL_VERSION_OVERRIDE=3.3
+      - MESA_LOADER_DRIVER_OVERRIDE=llvmpipe
+      - LD_LIBRARY_PATH=/opt/ros/humble/lib:/opt/ros2_ws/install/lib
+      - GAZEBO_PLUGIN_PATH=/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins
+      - GAZEBO_SYSTEM_PLUGIN_PATH=/opt/ros/humble/lib
+      - GAZEBO_MODEL_PATH=/opt/ros2_ws/install/line_follower_world/share/line_follower_world/worlds:/usr/share/gazebo-11/models
+      - GAZEBO_RESOURCE_PATH=/opt/ros2_ws/install/line_follower_world/share/line_follower_world/worlds:/usr/share/gazebo-11
       - LOG_DIR=/logs/run_${RUN_ID:-latest}
     command: >
-      bash -lc "source /opt/ros/humble/setup.bash &&
+      bash -lc "Xvfb :99 -screen 0 1280x720x24 -ac & sleep 2 &&
+                export DISPLAY=:99 &&
+                export LIBGL_ALWAYS_SOFTWARE=1 &&
+                source /opt/ros/humble/setup.bash &&
                 source /opt/ros2_ws/install/setup.bash &&
                 ros2 launch line_follower_bringup line_follower_demo.launch.py start_control:=false use_sim_time:=true"
     networks:
@@ -29,6 +42,11 @@ services:
     environment:
       - ROS_DOMAIN_ID=23
       - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+      - GAZEBO_PLUGIN_PATH=/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins
+      - GAZEBO_SYSTEM_PLUGIN_PATH=/opt/ros/humble/lib
+      - GAZEBO_MODEL_PATH=/opt/ros2_ws/install/line_follower_world/share/line_follower_world/worlds:/usr/share/gazebo-11/models
+      - GAZEBO_RESOURCE_PATH=/opt/ros2_ws/install/line_follower_world/share/line_follower_world/worlds:/usr/share/gazebo-11
+      - LD_LIBRARY_PATH=/opt/ros/humble/lib:/opt/ros2_ws/install/lib
       - LOG_DIR=/logs/run_${RUN_ID:-latest}
     depends_on:
       - sim
@@ -51,6 +69,7 @@ services:
     environment:
       - GAZEBO_MASTER_URI=http://sim:11345
       - ROS_DOMAIN_ID=23
+      - LD_LIBRARY_PATH=/opt/ros/humble/lib:/opt/ros2_ws/install/lib
     depends_on:
       - sim
     networks:

@@ -10,7 +10,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-image-transport ros-humble-robot-state-publisher \
     ros-humble-joint-state-publisher ros-humble-nav-msgs \
     ros-humble-geometry-msgs ros-humble-launch-ros \
-    ros-humble-launch python3-opencv python3-numpy && \
+    ros-humble-launch python3-opencv python3-numpy xvfb \
+    mesa-utils libgl1-mesa-dri libglu1-mesa && \
     rm -rf /var/lib/apt/lists/*
 
 RUN rosdep init || true && rosdep update

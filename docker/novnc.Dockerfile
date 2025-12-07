@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     xfce4 xfce4-goodies x11vnc novnc websockify \
-    supervisor net-tools \
+    supervisor net-tools xvfb \
     gazebo \
     && rm -rf /var/lib/apt/lists/*
 
@@ -19,6 +19,7 @@ ENV VNC_PORT=5900
 ENV NOVNC_PORT=8080
 ENV GAZEBO_MASTER_URI=http://sim:11345
 ENV ROS_DOMAIN_ID=23
+ENV LIBGL_ALWAYS_SOFTWARE=1
 
 EXPOSE 8080
 

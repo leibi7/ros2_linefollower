@@ -15,7 +15,7 @@ class LineFollowerNode(Node):
     def __init__(self):
         super().__init__("line_follower")
 
-        self.declare_parameter("linear_speed", 0.2)
+        self.declare_parameter("linear_speed", 0.15)
         self.declare_parameter("kp", 0.004)
         self.declare_parameter("kd", 0.002)
         self.declare_parameter("h_low1", 0)
@@ -54,7 +54,7 @@ class LineFollowerNode(Node):
 
         self.cmd_pub = self.create_publisher(Twist, "cmd_vel", 10)
         self.image_sub = self.create_subscription(
-            Image, "/camera/image_raw", self.image_callback, 10
+            Image, "/downward_camera/image_raw", self.image_callback, 10
         )
 
     def image_callback(self, msg: Image):
@@ -97,6 +97,7 @@ class LineFollowerNode(Node):
             self.log_file.write(
                 f"{now:.3f},line_found,center={cx},error={error:.2f},angular={angular:.3f}\n"
             )
+            self.log_file.flush()
         else:
             # Stop if no line detected
             twist.linear.x = 0.0
@@ -104,6 +105,7 @@ class LineFollowerNode(Node):
             self.log_file.write(
                 f"{self.get_clock().now().nanoseconds/1e9:.3f},no_line\n"
             )
+            self.log_file.flush()
 
         self.cmd_pub.publish(twist)
 
