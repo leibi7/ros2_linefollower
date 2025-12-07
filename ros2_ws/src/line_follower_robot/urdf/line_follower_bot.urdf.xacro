@@ -127,7 +127,8 @@
     <parent link="base_link"/>
     <child link="camera_link"/>
     <!-- Camera above robot, pitched ~45deg forward/down (negative pitch looks at ground ahead) -->
-    <origin xyz="0.08 0 0.22" rpy="0 ${0.785} 0"/>
+    <!-- Centered over base to avoid bias; keep 45deg pitch -->
+    <origin xyz="0 0 0.22" rpy="0 ${0.785} 0"/>
   </joint>
 
   <!-- Transmissions -->

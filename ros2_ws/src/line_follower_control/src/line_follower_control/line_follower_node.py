@@ -15,7 +15,7 @@ class LineFollowerNode(Node):
     def __init__(self):
         super().__init__("line_follower")
 
-        self.declare_parameter("linear_speed", 0.15)
+        self.declare_parameter("linear_speed", 0.22)
         self.declare_parameter("kp", 0.004)
         self.declare_parameter("kd", 0.002)
         self.declare_parameter("h_low1", 0)
