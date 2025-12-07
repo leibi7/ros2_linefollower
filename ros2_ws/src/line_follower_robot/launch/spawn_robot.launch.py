@@ -12,6 +12,7 @@ def generate_launch_description():
     x = LaunchConfiguration("x", default="0.0")
     y = LaunchConfiguration("y", default="0.0")
     z = LaunchConfiguration("z", default="0.05")
+    yaw = LaunchConfiguration("yaw", default="0.30")
 
     robot_desc_path = os.path.join(
         get_package_share_directory("line_follower_robot"),
@@ -26,6 +27,7 @@ def generate_launch_description():
             DeclareLaunchArgument("x", default_value="0.0"),
             DeclareLaunchArgument("y", default_value="0.0"),
             DeclareLaunchArgument("z", default_value="0.05"),
+            DeclareLaunchArgument("yaw", default_value="0.30"),
             Node(
                 package="robot_state_publisher",
                 executable="robot_state_publisher",
@@ -59,6 +61,8 @@ def generate_launch_description():
                             y,
                             "-z",
                             z,
+                            "-Y",
+                            yaw,
                         ],
                         output="screen",
                     )

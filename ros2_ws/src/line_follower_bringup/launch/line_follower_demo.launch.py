@@ -27,9 +27,10 @@ def generate_launch_description():
         ),
         launch_arguments={
             "use_sim_time": use_sim_time,
-            "x": "0.0",
-            "y": "0.0",
+            "x": "-6.0",
+            "y": "-2.5",
             "z": "0.05",
+            "yaw": "0.30",
         }.items(),
     )
 
