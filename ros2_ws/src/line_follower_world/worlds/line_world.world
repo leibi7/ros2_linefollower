@@ -182,21 +182,22 @@
     <!-- Goal zone marker -->
     <model name="goal_zone">
       <static>true</static>
+      <!-- Keep at ground level to avoid a step -->
       <pose>7.2 -0.4 0 0 0 0</pose>
       <link name="goal_link">
         <collision name="goal_collision">
           <pose>0 0 0 0 0 0</pose>
           <geometry>
             <box>
-              <size>0.6 0.6 0.05</size>
+              <size>0.6 0.6 0.001</size>
             </box>
           </geometry>
         </collision>
         <visual name="goal_visual">
-          <pose>0 0 0.02 0 0 0</pose>
+          <pose>0 0 0.0005 0 0 0</pose>
           <geometry>
             <box>
-              <size>0.6 0.6 0.05</size>
+              <size>0.6 0.6 0.001</size>
             </box>
           </geometry>
           <material>
