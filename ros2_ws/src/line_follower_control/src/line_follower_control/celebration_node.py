@@ -14,8 +14,8 @@ DINO_SDF = """
 <?xml version='1.6'?>
 <sdf version='1.6'>
   <model name='party_dino'>
-    <static>true</static>
-    <pose>7.2 -0.4 0 0 0 0</pose>
+    <static>false</static>
+    <pose>7.0 -0.8 0 0 0 0</pose>
     <link name='body'>
       <visual name='torso'>
         <geometry>
@@ -93,8 +93,8 @@ class CelebrationNode(Node):
         state.pose.position.x = 7.2
         state.pose.position.y = -0.4
         state.pose.position.z = 0.0
-        steps = 40
-        duration = 1.6
+        steps = 60
+        duration = 2.4
         dt = duration / steps
         for i in range(steps + 1):
             angle = 2 * math.pi * (i / steps)

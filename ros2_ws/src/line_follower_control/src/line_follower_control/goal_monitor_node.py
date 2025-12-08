@@ -12,7 +12,7 @@ class GoalMonitorNode(Node):
         super().__init__("goal_monitor")
         self.declare_parameter("goal_x", 7.2)
         self.declare_parameter("goal_y", -0.4)
-        self.declare_parameter("tolerance", 0.35)
+        self.declare_parameter("tolerance", 0.6)
         self.goal_x = float(self.get_parameter("goal_x").value)
         self.goal_y = float(self.get_parameter("goal_y").value)
         self.tolerance = float(self.get_parameter("tolerance").value)
@@ -43,6 +43,13 @@ class GoalMonitorNode(Node):
             self.log_file.write(f"{stamp:.3f},goal_reached\n")
             self.log_file.flush()
             self.get_logger().info("GOAL reached!")
+        else:
+            # Occasional debug
+            if int(time.time()) % 2 == 0:
+                self.get_logger().debug(
+                    f"dist={dist_sq**0.5:.2f} tol={self.tolerance}",
+                    throttle_duration_sec=2.0,
+                )
 
     def destroy_node(self):
         try:
