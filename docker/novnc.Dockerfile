@@ -6,12 +6,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     xfce4 xfce4-goodies x11vnc novnc websockify \
     supervisor net-tools xvfb \
     gazebo \
+    xdotool wmctrl dbus-x11 \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up noVNC
 RUN ln -s /usr/share/novnc/vnc.html /usr/share/novnc/index.html
 
 COPY compose/novnc/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY compose/novnc/maximize_gz.sh /opt/maximize_gz.sh
+RUN chmod +x /opt/maximize_gz.sh
 
 ENV USER=root
 ENV DISPLAY=:1
