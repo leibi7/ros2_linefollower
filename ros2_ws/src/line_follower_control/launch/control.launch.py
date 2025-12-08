@@ -24,5 +24,12 @@ def generate_launch_description():
                 output="screen",
                 parameters=[{"use_sim_time": use_sim_time}],
             ),
+            Node(
+                package="line_follower_control",
+                executable="celebration_node",
+                name="celebration_node",
+                output="screen",
+                parameters=[{"use_sim_time": use_sim_time}],
+            ),
         ]
     )
