@@ -23,6 +23,7 @@ setup(
         "console_scripts": [
             "line_follower_node = line_follower_control.line_follower_node:main",
             "goal_monitor_node = line_follower_control.goal_monitor_node:main",
+            "celebration_node = line_follower_control.celebration_node:main",
         ],
     },
 )

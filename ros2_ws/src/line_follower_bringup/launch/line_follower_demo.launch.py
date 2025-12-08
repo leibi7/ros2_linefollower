@@ -42,6 +42,14 @@ def generate_launch_description():
         condition=IfCondition(start_control),
     )
 
+    celebration_node = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(control_pkg, "launch", "celebration.launch.py")
+        ),
+        launch_arguments={"use_sim_time": use_sim_time}.items(),
+        condition=IfCondition(start_control),
+    )
+
     return LaunchDescription(
         [
             DeclareLaunchArgument("use_sim_time", default_value="true"),
@@ -49,5 +57,6 @@ def generate_launch_description():
             world_launch,
             spawn_robot_launch,
             control_launch,
+            celebration_node,
         ]
     )
