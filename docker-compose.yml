@@ -17,8 +17,8 @@ services:
       - LD_LIBRARY_PATH=/opt/ros/humble/lib:/opt/ros2_ws/install/lib
       - GAZEBO_PLUGIN_PATH=/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins
       - GAZEBO_SYSTEM_PLUGIN_PATH=/opt/ros/humble/lib
-      - GAZEBO_MODEL_PATH=/opt/ros2_ws/install/line_follower_world/share/line_follower_world/worlds:/usr/share/gazebo-11/models
-      - GAZEBO_RESOURCE_PATH=/opt/ros2_ws/install/line_follower_world/share/line_follower_world/worlds:/usr/share/gazebo-11
+      - GAZEBO_MODEL_PATH=/opt/ros2_ws/install/line_follower_world/share/line_follower_world/models:/usr/share/gazebo-11/models
+      - GAZEBO_RESOURCE_PATH=/opt/ros2_ws/install/line_follower_world/share/line_follower_world/worlds:/opt/ros2_ws/install/line_follower_world/share/line_follower_world/models:/usr/share/gazebo-11
       - LOG_DIR=/logs/run_${RUN_ID:-latest}
     command: >
       bash -lc "Xvfb :99 -screen 0 1280x720x24 -ac & sleep 2 &&
@@ -44,8 +44,8 @@ services:
       - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
       - GAZEBO_PLUGIN_PATH=/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins
       - GAZEBO_SYSTEM_PLUGIN_PATH=/opt/ros/humble/lib
-      - GAZEBO_MODEL_PATH=/opt/ros2_ws/install/line_follower_world/share/line_follower_world/worlds:/usr/share/gazebo-11/models
-      - GAZEBO_RESOURCE_PATH=/opt/ros2_ws/install/line_follower_world/share/line_follower_world/worlds:/usr/share/gazebo-11
+      - GAZEBO_MODEL_PATH=/opt/ros2_ws/install/line_follower_world/share/line_follower_world/models:/usr/share/gazebo-11/models
+      - GAZEBO_RESOURCE_PATH=/opt/ros2_ws/install/line_follower_world/share/line_follower_world/worlds:/opt/ros2_ws/install/line_follower_world/share/line_follower_world/models:/usr/share/gazebo-11
       - LD_LIBRARY_PATH=/opt/ros/humble/lib:/opt/ros2_ws/install/lib
       - LOG_DIR=/logs/run_${RUN_ID:-latest}
     depends_on:

@@ -1,4 +1,16 @@
 from setuptools import setup
+import os
+
+
+def package_files(directory):
+    paths = []
+    for (path, _, filenames) in os.walk(directory):
+        for filename in filenames:
+            paths.append(os.path.join(path, filename))
+    return paths
+
+
+model_files = package_files("models")
 
 package_name = "line_follower_world"
 
@@ -12,6 +24,7 @@ setup(
         ("share/" + package_name, ["package.xml"]),
         ("share/" + package_name + "/worlds", ["worlds/line_world.world"]),
         ("share/" + package_name + "/launch", ["launch/world.launch.py"]),
+        ("share/" + package_name + "/models", model_files),
     ],
     install_requires=["setuptools"],
     zip_safe=True,

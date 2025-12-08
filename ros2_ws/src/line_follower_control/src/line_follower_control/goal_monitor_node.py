@@ -12,7 +12,7 @@ class GoalMonitorNode(Node):
         super().__init__("goal_monitor")
         self.declare_parameter("goal_x", 7.2)
         self.declare_parameter("goal_y", -0.4)
-        self.declare_parameter("tolerance", 0.6)
+        self.declare_parameter("tolerance", 0.8)
         self.goal_x = float(self.get_parameter("goal_x").value)
         self.goal_y = float(self.get_parameter("goal_y").value)
         self.tolerance = float(self.get_parameter("tolerance").value)

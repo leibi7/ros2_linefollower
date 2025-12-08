@@ -9,6 +9,7 @@ from cv_bridge import CvBridge
 from geometry_msgs.msg import Twist
 from rclpy.node import Node
 from sensor_msgs.msg import Image
+from std_msgs.msg import Bool
 
 
 class LineFollowerNode(Node):
@@ -56,8 +57,23 @@ class LineFollowerNode(Node):
         self.image_sub = self.create_subscription(
             Image, "/downward_camera/image_raw", self.image_callback, 10
         )
+        self.goal_sub = self.create_subscription(Bool, "/goal_reached", self.goal_cb, 10)
+        self.goal_reached = False
+
+    def goal_cb(self, msg: Bool):
+        if msg.data:
+            self.goal_reached = True
+            stop = Twist()
+            for _ in range(5):
+                self.cmd_pub.publish(stop)
+            self.get_logger().info("Goal reached flag received, stopping controller")
 
     def image_callback(self, msg: Image):
+        if self.goal_reached:
+            # Ensure we stay stopped
+            stop = Twist()
+            self.cmd_pub.publish(stop)
+            return
         cv_img = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
         height, width, _ = cv_img.shape
 
