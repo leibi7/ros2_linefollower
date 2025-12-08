@@ -65,19 +65,24 @@ class CelebrationNode(Node):
             self.cmd_pub.publish(stop)
             time.sleep(0.05)
 
-        # Spawn dino
-        if not self.spawn_cli.service_is_ready():
-            self.spawn_cli.wait_for_service(timeout_sec=5.0)
+        # Spawn dino (retry a few times)
         req = SpawnEntity.Request()
         req.name = "party_dino"
         req.xml = DINO_SDF
         req.robot_namespace = "dino"
         req.reference_frame = "world"
-        try:
-            future = self.spawn_cli.call_async(req)
-            rclpy.spin_until_future_complete(self, future, timeout_sec=5.0)
-        except Exception as e:
-            self.get_logger().warn(f"Spawn failed: {e}")
+        for attempt in range(3):
+            if not self.spawn_cli.service_is_ready():
+                self.spawn_cli.wait_for_service(timeout_sec=5.0)
+            try:
+                future = self.spawn_cli.call_async(req)
+                rclpy.spin_until_future_complete(self, future, timeout_sec=5.0)
+                if future.result() is not None:
+                    self.get_logger().info("Dino spawned")
+                    break
+            except Exception as e:
+                self.get_logger().warn(f"Spawn failed (try {attempt+1}): {e}")
+            time.sleep(0.5)
 
         # Animate backflip (rotate about Y)
         self.animate_backflip()

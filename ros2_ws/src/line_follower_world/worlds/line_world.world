@@ -41,7 +41,7 @@
       <static>true</static>
       <link name="path_link">
         <visual name="seg0">
-          <pose>-5.0 -2.2 0.002 0 0 0.30</pose>
+          <pose>-5.0 -2.2 0.0005 0 0 0.30</pose>
           <geometry>
             <plane>
               <normal>0 0 1</normal>
@@ -58,7 +58,7 @@
           </material>
         </visual>
         <visual name="seg1">
-          <pose>-3.0 -1.65 0.002 0 0 0.23</pose>
+          <pose>-3.0 -1.65 0.0005 0 0 0.23</pose>
           <geometry>
             <plane>
               <normal>0 0 1</normal>
@@ -75,7 +75,7 @@
           </material>
         </visual>
         <visual name="seg2">
-          <pose>-0.75 -1.45 0.002 0 0 -0.05</pose>
+          <pose>-0.75 -1.45 0.0005 0 0 -0.05</pose>
           <geometry>
             <plane>
               <normal>0 0 1</normal>
@@ -92,7 +92,7 @@
           </material>
         </visual>
         <visual name="seg3">
-          <pose>1.35 -2.0 0.002 0 0 -0.60</pose>
+          <pose>1.35 -2.0 0.0005 0 0 -0.60</pose>
           <geometry>
             <plane>
               <normal>0 0 1</normal>
@@ -109,7 +109,7 @@
           </material>
         </visual>
         <visual name="seg4">
-          <pose>3.15 -2.2 0.002 0 0 0.27</pose>
+          <pose>3.15 -2.2 0.0005 0 0 0.27</pose>
           <geometry>
             <plane>
               <normal>0 0 1</normal>
@@ -126,7 +126,7 @@
           </material>
         </visual>
         <visual name="seg5">
-          <pose>4.7 -1.35 0.002 0 0 0.90</pose>
+          <pose>4.7 -1.35 0.0005 0 0 0.90</pose>
           <geometry>
             <plane>
               <normal>0 0 1</normal>
@@ -143,7 +143,7 @@
           </material>
         </visual>
         <visual name="seg6">
-          <pose>5.85 -0.35 0.002 0 0 0.80</pose>
+          <pose>5.85 -0.35 0.0005 0 0 0.80</pose>
           <geometry>
             <plane>
               <normal>0 0 1</normal>
@@ -160,7 +160,7 @@
           </material>
         </visual>
         <visual name="seg7">
-          <pose>6.9 -0.1 0.002 0 0 -0.40</pose>
+          <pose>6.9 -0.1 0.0005 0 0 -0.40</pose>
           <geometry>
             <plane>
               <normal>0 0 1</normal>
@@ -183,7 +183,7 @@
     <model name="goal_zone">
       <static>true</static>
       <!-- Keep at ground level to avoid a step -->
-      <pose>7.2 -0.4 0 0 0 0</pose>
+      <pose>7.2 -0.4 0.0005 0 0 0</pose>
       <link name="goal_link">
         <collision name="goal_collision">
           <pose>0 0 0 0 0 0</pose>
