@@ -8,8 +8,7 @@ Teljesen konténeresített ROS 2 Humble demó: Gazebo Classic világ piros pály
 
 ## Gyors indítás
 ```bash
-git clone <repo-url>
-cd ros2_line_follower_docker
+Klónozott repo mappában:
 docker compose up -d --build   # sim + control + noVNC
 # böngésző: http://localhost:8080 -> Gazebo kliens
 ```
