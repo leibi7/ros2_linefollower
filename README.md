@@ -2,18 +2,18 @@
 
 Teljesen konténeresített ROS 2 Humble demó: Gazebo Classic világ piros pályával és zöld célmezővel, differenciálhajtású robot lefelé néző kamerával, OpenCV-alapú vonalkövető és célfigyelő csomópont, valamint noVNC asztal a Gazebo klienshez (`http://localhost:8080`).
 
-## Prereq
+## Előfeltételek
 - Docker Desktop / Docker Engine + Docker Compose (macOS vagy Linux)
 - Egyszeri internetelérés az első buildhez
 
 ## Gyors indítás
 ```bash
-git clone <repo-url> ros2_line_follower_docker
+git clone <repo-url>
 cd ros2_line_follower_docker
 docker compose up -d --build   # sim + control + noVNC
 # böngésző: http://localhost:8080 -> Gazebo kliens
 ```
-Működés: a robot a piros S-alakú sáv elejéről indul, a lefelé néző kamera alapján követi a vonalat, és megáll, amikor a zöld célmező (kb. x=7.0, y=-0.8) 0.25 m-es toleranciával elérve van. Az állapot a `/goal_reached` témára kerül, a logok a `logs/run_*` könyvtárba íródnak.
+Működés: a robot a piros sáv elejéről indul, a lefelé néző kamera alapján követi a vonalat, és megáll, amikor a zöld célmezőt eléri. Az állapot a `/goal_reached` topicra kerül, a logok a `logs/run_*` könyvtárba íródnak.
 
 ## Szolgáltatások (docker-compose)
 - `sim`: `gzserver` a saját világgal; a robotot `spawn_entity.py` illeszti be.
@@ -37,8 +37,6 @@ Mindegyik konténer `ROS_DOMAIN_ID=23`-at használ, a logok a `./logs` mappába 
 - Cél kézi trigger:  
   `docker exec control bash -lc "source /opt/ros/humble/setup.bash && source /opt/ros2_ws/install/setup.bash && ros2 topic pub --once /goal_reached std_msgs/Bool '{data: true}'"`
 
-## Finomhangolás
-A vezérlő paraméterei (KP/KD, HSV küszöbök, vizsgált sorok) a `line_follower_control/line_follower_node.py`-ban vannak. Módosítás után `docker compose up -d --build`.
 
 ## Megjegyzések
 - Gazebo factory plugin engedélyezve, így a robotot `spawn_entity.py` illeszti a `gzserver`-be.
