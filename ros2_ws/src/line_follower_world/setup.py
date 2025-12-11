@@ -1,18 +1,20 @@
-from setuptools import setup
 import os
-
-
-def package_files(directory):
-    paths = []
-    for (path, _, filenames) in os.walk(directory):
-        for filename in filenames:
-            paths.append(os.path.join(path, filename))
-    return paths
-
-
-model_files = package_files("models")
+from setuptools import setup
 
 package_name = "line_follower_world"
+
+def package_files(directory, destination_root):
+    files_and_destinations = []
+    for (path, _, filenames) in os.walk(directory):
+        if not filenames:
+            continue
+        destination = os.path.join(destination_root, path)
+        source_files = [os.path.join(path, filename) for filename in filenames]
+        files_and_destinations.append((destination, source_files))
+    return files_and_destinations
+
+
+model_files = package_files("models", os.path.join("share", package_name))
 
 setup(
     name=package_name,
@@ -24,8 +26,8 @@ setup(
         ("share/" + package_name, ["package.xml"]),
         ("share/" + package_name + "/worlds", ["worlds/line_world.world"]),
         ("share/" + package_name + "/launch", ["launch/world.launch.py"]),
-        ("share/" + package_name + "/models", model_files),
-    ],
+    ]
+    + model_files,
     install_requires=["setuptools"],
     zip_safe=True,
     maintainer="ROS Line Follower",

@@ -10,9 +10,10 @@ from std_msgs.msg import Bool
 class GoalMonitorNode(Node):
     def __init__(self):
         super().__init__("goal_monitor")
-        self.declare_parameter("goal_x", 7.2)
-        self.declare_parameter("goal_y", -0.4)
-        self.declare_parameter("tolerance", 0.8)
+        # Target the center of the green pad so the robot stops on top of it
+        self.declare_parameter("goal_x", 7.0)
+        self.declare_parameter("goal_y", -0.8)
+        self.declare_parameter("tolerance", 0.25)
         self.goal_x = float(self.get_parameter("goal_x").value)
         self.goal_y = float(self.get_parameter("goal_y").value)
         self.tolerance = float(self.get_parameter("tolerance").value)

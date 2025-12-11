@@ -1,48 +1,46 @@
 # ROS2 Line Follower (Docker + Gazebo + noVNC)
 
-End-to-end ROS 2 Humble line-follower demo fully containerized. The stack brings up Gazebo with a red, curved track, a small diff-drive robot with a downward camera, a line-following controller (OpenCV), a goal monitor, and a noVNC desktop at `http://localhost:8080` to watch the simulation.
+Teljesen konténeresített ROS 2 Humble demó: Gazebo Classic világ piros pályával és zöld célmezővel, differenciálhajtású robot lefelé néző kamerával, OpenCV-alapú vonalkövető és célfigyelő csomópont, valamint noVNC asztal a Gazebo klienshez (`http://localhost:8080`).
 
-## Prerequisites
-- macOS (or Linux) with Docker Desktop / Docker Engine + Docker Compose
-- Internet access for initial image builds
+## Prereq
+- Docker Desktop / Docker Engine + Docker Compose (macOS vagy Linux)
+- Egyszeri internetelérés az első buildhez
 
-## Quick Start
+## Gyors indítás
 ```bash
-git clone <your repo url> ros2_line_follower_docker
+git clone <repo-url> ros2_line_follower_docker
 cd ros2_line_follower_docker
-docker compose build      # builds ROS workspace and noVNC image
-docker compose up         # sim + control + noVNC
-# open http://localhost:8080 to see Gazebo client
+docker compose up -d --build   # sim + control + noVNC
+# böngésző: http://localhost:8080 -> Gazebo kliens
 ```
-What to expect: the robot spawns at the start of a red S-shaped line, detects the line from its downward camera, follows it, and stops once the goal zone (green square) near the end is reached. The goal status is published on `/goal_reached` and logged under `logs/run_*`.
+Működés: a robot a piros S-alakú sáv elejéről indul, a lefelé néző kamera alapján követi a vonalat, és megáll, amikor a zöld célmező (kb. x=7.0, y=-0.8) 0.25 m-es toleranciával elérve van. Az állapot a `/goal_reached` témára kerül, a logok a `logs/run_*` könyvtárba íródnak.
 
-## Services (docker-compose)
-- `sim`: runs Gazebo (`gzserver`) with the custom world, spawns the robot.
-- `control`: runs the OpenCV-based line follower and the goal monitor.
-- `novnc`: provides a lightweight desktop + Gazebo client over noVNC at `http://localhost:8080`.
+## Szolgáltatások (docker-compose)
+- `sim`: `gzserver` a saját világgal; a robotot `spawn_entity.py` illeszti be.
+- `control`: OpenCV-alapú vonalkövető és célfigyelő csomópontok.
+- `novnc`: könnyű asztal + Gazebo kliens noVNC-n keresztül (`http://localhost:8080`).
 
-All containers share `ROS_DOMAIN_ID=23` for DDS discovery and mount `./logs` to persist run logs.
+Mindegyik konténer `ROS_DOMAIN_ID=23`-at használ, a logok a `./logs` mappába vannak kötve.
 
-## Packages (ros2_ws/src)
-- `line_follower_world`: Gazebo world with red curved track and goal zone.
-- `line_follower_robot`: URDF/xacro diff-drive robot with downward camera + spawn launch.
-- `line_follower_control`: line follower node (OpenCV HSV threshold + PD steering) and goal monitor node.
-- `line_follower_bringup`: main launch to start world, spawn robot, and optionally start control.
+## Csomagok (ros2_ws/src)
+- `line_follower_world`: Gazebo világ (piros pálya, zöld célmező), `world.launch.py`.
+- `line_follower_robot`: URDF/xacro diff-drive robot lefelé néző kamerával + spawn launch.
+- `line_follower_control`: vonalkövető (HSV küszöb + PD kormányzás) és célfigyelő csomópont.
+- `line_follower_bringup`: fő launch a világ indításához, robot spawnhoz, vezérléshez.
 
-## Useful Commands
-- Build images: `docker compose build`
-- Start full stack: `docker compose up`
-- Headless test loop: `bash scripts/run_and_test.sh` (waits, stops, analyzes logs)
-- Check logs: `ls logs/run_*` then inspect `line_follower_*.log`, `goal_monitor_*.log`
-- Re-run controller only: `docker compose up control`
+## Hasznos parancsok
+- Build (újrafordítás): `docker compose up -d --build`
+- Indítás: `docker compose up -d`
+- Témák listázása a szimulátorban:  
+  `docker exec sim bash -lc "source /opt/ros/humble/setup.bash && source /opt/ros2_ws/install/setup.bash && ros2 topic list"`
+- Logok: `ls logs/run_*`, majd `line_follower_*.log`, `goal_monitor_*.log`
+- Cél kézi trigger:  
+  `docker exec control bash -lc "source /opt/ros/humble/setup.bash && source /opt/ros2_ws/install/setup.bash && ros2 topic pub --once /goal_reached std_msgs/Bool '{data: true}'"`
 
-## Tuning
-Parameters for the controller (KP/KD, HSV thresholds, scan rows) are declared in `line_follower_control/line_follower_node.py`. Adjust and rebuild the ROS image (`docker compose build`) to apply changes.
+## Finomhangolás
+A vezérlő paraméterei (KP/KD, HSV küszöbök, vizsgált sorok) a `line_follower_control/line_follower_node.py`-ban vannak. Módosítás után `docker compose up -d --build`.
 
-## Log Analysis
-`scripts/analyze_logs.py` reads the latest `logs/run_*` folder and returns SUCCESS if the line was detected and the goal was reached; otherwise it reports the failure reason. `scripts/run_and_test.sh` wires this into an automated smoke test.
-
-## Notes
-- Gazebo factory plugin is enabled to allow `spawn_entity.py` to insert the robot into `gzserver`.
-- The goal monitor uses `/odom` to detect proximity (default goal at `x=7.2`, `y=-0.4`, tolerance `0.35 m`).
-- noVNC uses port `8080`; adjust in `docker-compose.yml` if needed.
+## Megjegyzések
+- Gazebo factory plugin engedélyezve, így a robotot `spawn_entity.py` illeszti a `gzserver`-be.
+- A célfigyelő `/odom` alapján jelez (alapértelmezés: x=7.0, y=-0.8, tolerancia=0.25 m).
+- noVNC port: 8080 (módosítható a `docker-compose.yml`-ben).

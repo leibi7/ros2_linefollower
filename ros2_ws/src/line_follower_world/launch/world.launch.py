@@ -6,12 +6,16 @@ from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
-    world_path = os.path.join(
-        get_package_share_directory("line_follower_world"), "worlds", "line_world.world"
-    )
+    world_pkg_share = get_package_share_directory("line_follower_world")
+    world_path = os.path.join(world_pkg_share, "worlds", "line_world.world")
+    models_path = os.path.join(world_pkg_share, "models")
 
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
     verbose = LaunchConfiguration("verbose", default="true")
+    model_path_env = f"{models_path}:/usr/share/gazebo-11/models"
+    resource_path_env = (
+        f"{os.path.dirname(world_path)}:{models_path}:/usr/share/gazebo-11"
+    )
 
     return LaunchDescription(
         [
@@ -25,8 +29,8 @@ def generate_launch_description():
                 default_value="true",
                 description="Enable verbose Gazebo output",
             ),
-            SetEnvironmentVariable("GAZEBO_MODEL_PATH", os.path.dirname(world_path)),
-            SetEnvironmentVariable("GAZEBO_RESOURCE_PATH", os.path.dirname(world_path)),
+            SetEnvironmentVariable("GAZEBO_MODEL_PATH", model_path_env),
+            SetEnvironmentVariable("GAZEBO_RESOURCE_PATH", resource_path_env),
             SetEnvironmentVariable("GAZEBO_SYSTEM_PLUGIN_PATH", "/opt/ros/humble/lib"),
             ExecuteProcess(
                 cmd=[
@@ -42,8 +46,8 @@ def generate_launch_description():
                 additional_env={
                     "GAZEBO_SYSTEM_PLUGIN_PATH": "/opt/ros/humble/lib",
                     "GAZEBO_PLUGIN_PATH": "/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins",
-                    "GAZEBO_MODEL_PATH": f"{os.path.dirname(world_path)}:/usr/share/gazebo-11/models",
-                    "GAZEBO_RESOURCE_PATH": f"{os.path.dirname(world_path)}:/usr/share/gazebo-11",
+                    "GAZEBO_MODEL_PATH": model_path_env,
+                    "GAZEBO_RESOURCE_PATH": resource_path_env,
                 },
             ),
         ]
